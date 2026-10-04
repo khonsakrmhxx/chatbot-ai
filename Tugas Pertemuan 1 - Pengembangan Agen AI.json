@@ -1,0 +1,116 @@
+{
+  "name": "Tugas Pertemuan 1 - Pengembangan Agen AI",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo! 👋\nSaya NFAcademy Assistant, ada yang bisa saya bantu?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7119e89c-28af-4d9c-a8e8-94a38a5ce5b2",
+      "name": "When chat message received",
+      "webhookId": "a80d0e5b-32bc-495a-b264-fa657570d0cb"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah agen AI yang dapat menjawab pertanyaan dan memberikan informasi seputar pelatihan di NF Academy atau NF ACADEMY. Kamu bertugas membantu pengguna mendapatkan informasi mengenai program pelatihan, materi pembelajaran, biaya pelatihan, durasi, persyaratan, dan informasi lain yang berkaitan dengan pelatihan di NF Academy.\n\nJawablah setiap pertanyaan pengguna dengan bahasa Indonesia yang sopan, ramah, jelas, dan mudah dipahami.\n\nBerikan jawaban berdasarkan informasi yang tersedia dan dapat dipastikan kebenarannya. Jika pengguna menanyakan biaya pelatihan, jelaskan biaya sesuai data yang tersedia. Jika informasi biaya atau detail program belum tersedia, sampaikan bahwa informasi tersebut perlu dikonfirmasi melalui situs resmi NF Academy di https://nfacademy.id/.\n\nJangan mengarang informasi, harga, jadwal, promosi, atau detail program yang belum diketahui. Jika kamu tidak mengetahui jawaban atas pertanyaan pengguna, sampaikan dengan jujur dan arahkan pengguna untuk menghubungi NF Academy melalui saluran resmi.\n\nBerikan jawaban yang relevan dengan pertanyaan pengguna, tidak bertele-tele, dan fokus pada informasi pelatihan NF Academy. Jika pertanyaan tidak berkaitan dengan NF Academy atau program pelatihannya, arahkan pengguna untuk bertanya mengenai layanan dan pelatihan yang tersedia di NF Academy.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "86656ee0-4536-4704-a499-e7381d78ef88",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.6-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        208
+      ],
+      "id": "b136a670-e92d-4abc-bcbe-59406f38e35c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmudsKK7w8XRKrfk",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        304,
+        208
+      ],
+      "id": "47333b55-d468-4e19-bc85-f6d24b5eb577",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d75fe4d9-50fc-475e-8441-c6c246158af7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "61b1468bc693c5b8e9728bf0248de62b2889afebff0ddd50cc98b3b5de965b63"
+  },
+  "nodeGroups": [],
+  "id": "HPGfAmdvpeAbOelN",
+  "tags": []
+}
